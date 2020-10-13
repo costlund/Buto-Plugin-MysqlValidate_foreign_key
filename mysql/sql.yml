@@ -1,0 +1,41 @@
+db_get_fk:
+  sql: |
+    select distinct
+    kcu.CONSTRAINT_NAME,
+    kcu.TABLE_NAME,
+    kcu.COLUMN_NAME,
+    kcu.REFERENCED_TABLE_NAME,
+    kcu.REFERENCED_COLUMN_NAME,
+    fks.DELETE_RULE,
+    fks.UPDATE_RULE
+    from information_schema.key_column_usage as kcu
+    inner join information_schema.referential_constraints as fks on kcu.CONSTRAINT_NAME=fks.CONSTRAINT_NAME
+    where kcu.CONSTRAINT_SCHEMA=?
+    and kcu.CONSTRAINT_NAME<>'PRIMARY'
+    and fks.DELETE_RULE='RESTRICT'
+    and kcu.REFERENCED_TABLE_NAME=?
+    order by kcu.TABLE_NAME
+  params:
+    -
+      type: s
+      value: rs:database
+    -
+      type: s
+      value: rs:reference_table_name
+  select:
+    - CONSTRAINT_NAME
+    - TABLE_NAME
+    - COLUMN_NAME
+    - REFERENCED_TABLE_NAME
+    - REFERENCED_COLUMN_NAME
+    - DELETE_RULE
+    - UPDATE_RULE
+db_get_table:
+  sql: |
+    select count([COLUMN_NAME]) from [TABLE_NAME] where [COLUMN_NAME]=?
+  params:
+    -
+      type: s
+      value: rs:post_value
+  select:
+    - count_value
