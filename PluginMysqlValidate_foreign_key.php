@@ -33,7 +33,7 @@ class PluginMysqlValidate_foreign_key{
     if($form->get("items/".$field."/is_valid")){
       $this->db_open();
       /**
-       * 
+       * db_get_fk
        */
       $sql = $this->getSql('db_get_fk');
       $sql->setByTag($this->settings->get('data/mysql'));
@@ -41,6 +41,9 @@ class PluginMysqlValidate_foreign_key{
       $this->mysql->execute($sql->get());
       $rs = $this->mysql->getMany();
       foreach($rs as $k => $v){
+        /**
+         * count posts
+         */
         $sql = $this->getSql('db_get_table');
         foreach($v as $k2 => $v2){
           $sql->set('sql', str_replace("[$k2]", $v2, $sql->get('sql')));
