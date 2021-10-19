@@ -1,5 +1,9 @@
-version: 1.0.1
+version: 1.1.0
 history:
+  1.1.0:
+    date: '2021-10-19'
+    title: Places
+    description: 'Add places to validation text.'
   1.0.1:
     date: '2020-12-07'
     title: Documentation

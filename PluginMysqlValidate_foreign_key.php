@@ -62,8 +62,12 @@ class PluginMysqlValidate_foreign_key{
        * Sum all.
        */
       $sum = 0;
+      $count = 0;
       foreach($result->get('foreign_keys') as $v){
         $sum += $v['result'];
+        if($v['result']){
+          $count++;
+        }
       }
       $result->set('sum', $sum);
       /**
@@ -74,7 +78,7 @@ class PluginMysqlValidate_foreign_key{
          * 
          */
         $form->set("items/$field/is_valid", false);
-        $form->set("items/$field/errors/", $this->i18n->translateFromTheme('?label has reference data and can not be removed (?sum posts).', array('?label' => $form->get("items/$field/label"), '?sum' => $result->get('sum'))));
+        $form->set("items/$field/errors/", $this->i18n->translateFromTheme('?label has reference data and can not be removed (?sum posts, ?count places).', array('?label' => $form->get("items/$field/label"), '?sum' => $result->get('sum'), '?count' => $count)));
       }
     }
     return $form->get();
